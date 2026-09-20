@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: raw
+    description: >
+      Nightly flat file extracts from the three Kelvinside source systems.
+      Read directly from disk as text, so that casting failures surface as
+      data quality findings rather than being hidden by silent coercion at
+      load time.
+    meta:
+      external_location: "read_csv_auto('../data/raw/{name}.csv', header=true, all_varchar=true)"
+    tables:
+      - name: hr_employees
+      - name: crm_clients
+      - name: crm_contacts
+      - name: crm_opportunities
+      - name: finance_cost_centres
+      - name: finance_client_accounts
+      - name: finance_suppliers
+      - name: finance_invoices

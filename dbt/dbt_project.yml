@@ -16,7 +16,7 @@ clean-targets:
 models:
   kelvinside_dq:
     staging:
-      +materialized: view
+      +materialized: table
       +schema: staging
     marts:
       +materialized: table

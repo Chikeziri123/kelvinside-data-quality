@@ -1,0 +1,9 @@
+kelvinside_dq:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/warehouse/kelvinside.duckdb
+      threads: 4
+      extensions:
+        - parquet

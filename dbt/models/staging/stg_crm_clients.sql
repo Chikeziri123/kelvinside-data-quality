@@ -5,14 +5,17 @@ with source as (
 select
     client_id,
     nullif(trim(client_name), '')                       as client_name,
-    -- Normalised name supports duplicate detection without altering the
-    -- record the business sees. Legal suffixes and punctuation are the
-    -- main cause of the same organisation being entered twice.
+    -- Normalised name for duplicate detection. Only the suffixes that
+    -- denote the SAME legal entity written differently are stripped:
+    -- Ltd and Limited, PLC and Plc. Group, Holdings and LLC are retained
+    -- because "Jones Group" and "Jones Ltd" are different companies, and
+    -- collapsing them produces false positives that erode steward trust
+    -- in the whole scorecard. See ADR-002.
     regexp_replace(
         lower(
             regexp_replace(
                 coalesce(client_name, ''),
-                '\s+(ltd|limited|plc|llp|group|holdings)\.?$',
+                '\s+(ltd|limited)\.?$',
                 '',
                 'gi'
             )

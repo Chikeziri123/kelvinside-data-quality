@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: fct_rule_results
+    description: >
+      One row per rule per run, with failure counts, failure rate and the
+      verdict against the catalogue threshold. This is the grain the
+      scorecard aggregates from.
+    columns:
+      - name: rule_id
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dq_rules')
+                field: rule_id
+      - name: failure_rate_pct
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 100
+                inclusive: true
+
+  - name: fct_dq_issues
+    description: >
+      One managed issue per breached rule, carrying owner, steward, SLA
+      target and status. The unit of remediation work.
+    columns:
+      - name: issue_id
+        data_tests:
+          - unique
+          - not_null
+      - name: sla_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['On track', 'Due now', 'Overdue', 'Resolved']
+
+  - name: dim_data_owners
+    description: Ownership roles derived from the rules catalogue.
+    columns:
+      - name: role_name
+        data_tests:
+          - unique
+          - not_null

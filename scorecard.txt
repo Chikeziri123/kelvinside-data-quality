@@ -1,0 +1,77 @@
+﻿RULE RESULTS
+------------------------------------------------------------------------------
+Rule        Severity     Fail     Pop   Rate %  Status
+DQ-CRM-004  Critical       18     618   2.9126  Breached
+DQ-CRM-007  Critical       45     900      5.0  Breached
+DQ-FIN-003  Critical       97    2424   4.0017  Breached
+DQ-FIN-005  Critical       72    2424   2.9703  Breached
+DQ-FIN-008  Critical       24    2424   0.9901  Breached
+DQ-CRM-002  High           13     618   2.1036  Breached
+DQ-CRM-003  High           24     618   3.8835  Breached
+DQ-CRM-006  High           30    1500      2.0  Breached
+DQ-CRM-009  High           18     900      2.0  Breached
+DQ-FIN-001  High           18     618   2.9126  Breached
+DQ-FIN-004  High           48    2424   1.9802  Breached
+DQ-FIN-006  High           36    2424   1.4851  Breached
+DQ-HR-001   High           12     400      3.0  Breached
+DQ-HR-003   High           16     400      4.0  Breached
+DQ-HR-004   High            4     400      1.0  Breached
+DQ-CRM-001  Medium         18     618   2.9126  Breached
+DQ-CRM-008  Medium        290     900  32.2222  Breached
+DQ-FIN-002  Medium          6     180   3.3333  Breached
+DQ-HR-006   High            2     400      0.5  Within tolerance
+DQ-HR-007   High            2     400      0.5  Within tolerance
+DQ-CRM-005  Low            60    1500      4.0  Within tolerance
+DQ-FIN-009  Low             0     618      0.0  Clean
+DQ-CRM-010  Medium          0     900      0.0  Clean
+DQ-FIN-007  Medium         24    2424   0.9901  Within tolerance
+DQ-HR-002   Medium          8     400      2.0  Within tolerance
+DQ-HR-005   Medium          4     400      1.0  Within tolerance
+
+
+OPEN ISSUES
+------------------------------------------------------------------------------
+ISS-CRM-004-20260920      Critical      18 records  due 2026-09-22  On track
+                          assigned to CRM Administrator
+ISS-CRM-007-20260920      Critical      45 records  due 2026-09-22  On track
+                          assigned to CRM Administrator
+ISS-FIN-003-20260920      Critical      97 records  due 2026-09-22  On track
+                          assigned to Accounts Payable Lead
+ISS-FIN-005-20260920      Critical      72 records  due 2026-09-22  On track
+                          assigned to Management Accountant
+ISS-FIN-008-20260920      Critical      24 records  due 2026-09-22  On track
+                          assigned to Accounts Payable Lead
+ISS-HR-001-20260920       High          12 records  due 2026-09-25  On track
+                          assigned to HR Systems Officer
+ISS-HR-003-20260920       High          16 records  due 2026-09-25  On track
+                          assigned to Management Accountant
+ISS-HR-004-20260920       High           4 records  due 2026-09-25  On track
+                          assigned to HR Systems Officer
+ISS-CRM-002-20260920      High          13 records  due 2026-09-25  On track
+                          assigned to CRM Administrator
+ISS-CRM-003-20260920      High          24 records  due 2026-09-25  On track
+                          assigned to CRM Administrator
+ISS-CRM-006-20260920      High          30 records  due 2026-09-25  On track
+                          assigned to CRM Administrator
+ISS-CRM-009-20260920      High          18 records  due 2026-09-25  On track
+                          assigned to CRM Administrator
+ISS-FIN-001-20260920      High          18 records  due 2026-09-25  On track
+                          assigned to Accounts Payable Lead
+ISS-FIN-004-20260920      High          48 records  due 2026-09-25  On track
+                          assigned to Accounts Payable Lead
+ISS-FIN-006-20260920      High          36 records  due 2026-09-25  On track
+                          assigned to Accounts Payable Lead
+ISS-CRM-001-20260920      Medium        18 records  due 2026-10-10  On track
+                          assigned to CRM Administrator
+ISS-CRM-008-20260920      Medium       290 records  due 2026-10-10  On track
+                          assigned to CRM Administrator
+ISS-FIN-002-20260920      Medium         6 records  due 2026-10-10  On track
+                          assigned to Accounts Payable Lead
+
+
+SUMMARY
+------------------------------------------------------------------------------
+Clean rules:            2
+Within tolerance:       6
+Breached:               18
+Mean pass rate:         96.63 percent

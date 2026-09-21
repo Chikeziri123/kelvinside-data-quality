@@ -22,14 +22,31 @@ def main():
     print("RULE RESULTS")
     print("-" * 78)
     rows = con.execute("""
-        select rule_id, severity, failing_records, population_records,
-               failure_rate_pct, rule_status
+        select rule_id, severity, failing_records, population_in_scope,
+               population_total, failure_rate_pct, rule_status
         from main_marts.fct_rule_results
         order by is_breached desc, severity, rule_id
     """).fetchall()
-    print(f"{'Rule':<12}{'Severity':<10}{'Fail':>7}{'Pop':>8}{'Rate %':>9}  Status")
-    for rule, sev, fail, pop, rate, status in rows:
-        print(f"{rule:<12}{sev:<10}{fail:>7}{pop:>8}{rate:>9}  {status}")
+
+    header = f"{'Rule':<12}{'Severity':<10}{'Fail':>6}{'Scope':>8}{'Total':>8}{'Rate %':>9}  Status"
+    print(header)
+    for rule, sev, fail, scope, total, rate, status in rows:
+        print(f"{rule:<12}{sev:<10}{fail:>6}{scope:>8}{total:>8}{rate:>9}  {status}")
+
+    print("\n\nWHERE THE SCOPED DENOMINATOR CHANGED THE RATE")
+    print("-" * 78)
+    scoped = con.execute("""
+        select rule_id, population_in_scope, population_total,
+               failure_rate_pct,
+               round(100.0 * failing_records / population_total, 4) as rate_on_full_table
+        from main_marts.fct_rule_results
+        where population_in_scope < population_total
+          and failing_records > 0
+        order by failure_rate_pct - round(100.0 * failing_records / population_total, 4) desc
+    """).fetchall()
+    for rule, scope, total, scoped_rate, full_rate in scoped:
+        print(f"{rule:<12} {scoped_rate:>8} % on {scope:>5} in scope"
+              f"   vs {full_rate:>8} % on {total:>5} total")
 
     print("\n\nOPEN ISSUES")
     print("-" * 78)

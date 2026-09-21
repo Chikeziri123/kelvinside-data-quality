@@ -71,3 +71,22 @@ Thresholds tested against the open pipeline:
 
 To be resolved before the scorecard is published, since the scorecard
 would otherwise present understated rates as fact.
+
+## Denominator defect: three suppressed breaches
+
+The scoped denominator change moved three rules from within tolerance to
+breached, and changed no rule in the opposite direction.
+
+| Rule | Full table | In scope | Threshold |
+|---|---|---|---|
+| DQ-HR-006 | 0.50% on 400 | 4.26% on 47 | 0.5% |
+| DQ-HR-007 | 0.50% on 400 | 4.17% on 48 | 0.5% |
+| DQ-HR-002 | 2.00% on 400 | 2.06% on 388 | 2.0% |
+
+Breached rules rose from 18 to 21. Mean pass rate fell from 96.63 to
+95.42 percent, which is the correct direction: the earlier figure was
+flattered by counting records no rule had examined.
+
+Note that the two HR-006 and HR-007 failures both originate from the
+single cascading defect on EMP0251 recorded above. One bad record, three
+rule breaches, two of which were invisible before this change.

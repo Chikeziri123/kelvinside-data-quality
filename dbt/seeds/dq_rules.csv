@@ -1,27 +1,27 @@
-rule_id,source_system,table_name,dimension,severity,threshold_pct,owner_role,steward_role,sla_days,rule_description
-DQ-HR-001,Brackenhill HR,hr_employees,Completeness,High,0.5,HR Director,HR Systems Officer,5,Active employee has a work email address
-DQ-HR-002,Brackenhill HR,hr_employees,Validity,Medium,2.0,HR Director,HR Systems Officer,20,Work email matches a valid address format
-DQ-HR-003,Brackenhill HR,hr_employees,Referential integrity,High,0.5,Finance Director,Management Accountant,5,Employee cost centre exists in the finance cost centre list
-DQ-HR-004,Brackenhill HR,hr_employees,Completeness,High,0.5,HR Director,HR Systems Officer,5,Every employee has a start date
-DQ-HR-005,Brackenhill HR,hr_employees,Validity,Medium,2.0,HR Director,HR Systems Officer,20,Start date is not in the future for an active employee
-DQ-HR-006,Brackenhill HR,hr_employees,Validity,High,0.5,HR Director,HR Systems Officer,5,Leaver date is on or after the start date
-DQ-HR-007,Brackenhill HR,hr_employees,Consistency,High,0.5,HR Director,HR Systems Officer,5,Employee with a leaver date is not marked Active
-DQ-CRM-001,Halstead CRM,crm_clients,Validity,Medium,2.0,Commercial Director,CRM Administrator,20,Client postcode matches UK postcode format
-DQ-CRM-002,Halstead CRM,crm_clients,Completeness,High,0.5,Commercial Director,CRM Administrator,5,Every active client has an account manager
-DQ-CRM-003,Halstead CRM,crm_clients,Consistency,High,0.5,Commercial Director,CRM Administrator,5,Client account manager is an active employee
-DQ-CRM-004,Halstead CRM,crm_clients,Uniqueness,Critical,0.0,Commercial Director,CRM Administrator,2,No duplicate client organisations
-DQ-CRM-005,Halstead CRM,crm_contacts,Completeness,Low,5.0,Commercial Director,CRM Administrator,90,Every contact has an email address
-DQ-CRM-006,Halstead CRM,crm_contacts,Referential integrity,High,0.5,Commercial Director,CRM Administrator,5,Contact references a client that exists
-DQ-CRM-007,Halstead CRM,crm_opportunities,Consistency,Critical,0.0,Commercial Director,CRM Administrator,2,Open opportunities are owned by an active employee
-DQ-CRM-008,Halstead CRM,crm_opportunities,Timeliness,Medium,2.0,Commercial Director,CRM Administrator,20,Open opportunities updated within the last 180 days
-DQ-CRM-009,Halstead CRM,crm_opportunities,Referential integrity,High,0.5,Commercial Director,CRM Administrator,5,Opportunity references a client that exists
-DQ-CRM-010,Halstead CRM,crm_opportunities,Validity,Medium,2.0,Commercial Director,CRM Administrator,20,Opportunity value is greater than zero
-DQ-FIN-001,Trentmoor Finance,finance_client_accounts,Referential integrity,High,0.5,Finance Director,Accounts Payable Lead,5,Finance client account references a CRM client that exists
-DQ-FIN-002,Trentmoor Finance,finance_suppliers,Completeness,Medium,2.0,Finance Director,Accounts Payable Lead,20,Active suppliers have a VAT number
-DQ-FIN-003,Trentmoor Finance,finance_invoices,Consistency,Critical,0.0,Finance Director,Accounts Payable Lead,2,Invoices are not raised against closed accounts
-DQ-FIN-004,Trentmoor Finance,finance_invoices,Referential integrity,High,0.5,Finance Director,Accounts Payable Lead,5,Invoice references an account that exists
-DQ-FIN-005,Trentmoor Finance,finance_invoices,Consistency,Critical,0.0,Finance Director,Management Accountant,2,Invoices are not posted to closed cost centres
-DQ-FIN-006,Trentmoor Finance,finance_invoices,Validity,High,0.5,Finance Director,Accounts Payable Lead,5,Invoice amount is greater than zero
-DQ-FIN-007,Trentmoor Finance,finance_invoices,Validity,Medium,2.0,Finance Director,Accounts Payable Lead,20,Invoice due date is on or after the invoice date
-DQ-FIN-008,Trentmoor Finance,finance_invoices,Uniqueness,Critical,0.0,Finance Director,Accounts Payable Lead,2,Invoice number appears exactly once
-DQ-FIN-009,Trentmoor Finance,finance_client_accounts,Validity,Low,5.0,Finance Director,Management Accountant,90,Credit limit is within the approved range
+rule_id,source_system,table_name,dimension,severity,threshold_pct,owner_role,steward_role,sla_days,population_filter,rule_description
+DQ-HR-001,Brackenhill HR,hr_employees,Completeness,High,0.5,HR Director,HR Systems Officer,5,employment_status = 'Active',Active employee has a work email address
+DQ-HR-002,Brackenhill HR,hr_employees,Validity,Medium,2.0,HR Director,HR Systems Officer,20,work_email is not null,Work email matches a valid address format
+DQ-HR-003,Brackenhill HR,hr_employees,Referential integrity,High,0.5,Finance Director,Management Accountant,5,cost_centre_code is not null,Employee cost centre exists in the finance cost centre list
+DQ-HR-004,Brackenhill HR,hr_employees,Completeness,High,0.5,HR Director,HR Systems Officer,5,1=1,Every employee has a start date
+DQ-HR-005,Brackenhill HR,hr_employees,Validity,Medium,2.0,HR Director,HR Systems Officer,20,employment_status = 'Active' and start_date is not null,Start date is not in the future for an active employee
+DQ-HR-006,Brackenhill HR,hr_employees,Validity,High,0.5,HR Director,HR Systems Officer,5,leaver_date is not null and start_date is not null,Leaver date is on or after the start date
+DQ-HR-007,Brackenhill HR,hr_employees,Consistency,High,0.5,HR Director,HR Systems Officer,5,leaver_date is not null,Employee with a leaver date is not marked Active
+DQ-CRM-001,Halstead CRM,crm_clients,Validity,Medium,2.0,Commercial Director,CRM Administrator,20,postcode is not null,Client postcode matches UK postcode format
+DQ-CRM-002,Halstead CRM,crm_clients,Completeness,High,0.5,Commercial Director,CRM Administrator,5,status = 'Active',Every active client has an account manager
+DQ-CRM-003,Halstead CRM,crm_clients,Consistency,High,0.5,Commercial Director,CRM Administrator,5,status = 'Active' and account_manager_employee_id is not null,Client account manager is an active employee
+DQ-CRM-004,Halstead CRM,crm_clients,Uniqueness,Critical,0.0,Commercial Director,CRM Administrator,2,postcode is not null,No duplicate client organisations
+DQ-CRM-005,Halstead CRM,crm_contacts,Completeness,Low,5.0,Commercial Director,CRM Administrator,90,1=1,Every contact has an email address
+DQ-CRM-006,Halstead CRM,crm_contacts,Referential integrity,High,0.5,Commercial Director,CRM Administrator,5,client_id is not null,Contact references a client that exists
+DQ-CRM-007,Halstead CRM,crm_opportunities,Consistency,Critical,0.0,Commercial Director,CRM Administrator,2,is_open and owner_employee_id is not null,Open opportunities are owned by an active employee
+DQ-CRM-008,Halstead CRM,crm_opportunities,Timeliness,Medium,2.0,Commercial Director,CRM Administrator,20,is_open and last_updated is not null,Open opportunities updated within the last 180 days
+DQ-CRM-009,Halstead CRM,crm_opportunities,Referential integrity,High,0.5,Commercial Director,CRM Administrator,5,client_id is not null,Opportunity references a client that exists
+DQ-CRM-010,Halstead CRM,crm_opportunities,Validity,Medium,2.0,Commercial Director,CRM Administrator,20,value_gbp is not null,Opportunity value is greater than zero
+DQ-FIN-001,Trentmoor Finance,finance_client_accounts,Referential integrity,High,0.5,Finance Director,Accounts Payable Lead,5,crm_client_ref is not null,Finance client account references a CRM client that exists
+DQ-FIN-002,Trentmoor Finance,finance_suppliers,Completeness,Medium,2.0,Finance Director,Accounts Payable Lead,20,status = 'Active',Active suppliers have a VAT number
+DQ-FIN-003,Trentmoor Finance,finance_invoices,Consistency,Critical,0.0,Finance Director,Accounts Payable Lead,2,account_id is not null,Invoices are not raised against closed accounts
+DQ-FIN-004,Trentmoor Finance,finance_invoices,Referential integrity,High,0.5,Finance Director,Accounts Payable Lead,5,account_id is not null,Invoice references an account that exists
+DQ-FIN-005,Trentmoor Finance,finance_invoices,Consistency,Critical,0.0,Finance Director,Management Accountant,2,cost_centre_code is not null,Invoices are not posted to closed cost centres
+DQ-FIN-006,Trentmoor Finance,finance_invoices,Validity,High,0.5,Finance Director,Accounts Payable Lead,5,amount_gbp is not null,Invoice amount is greater than zero
+DQ-FIN-007,Trentmoor Finance,finance_invoices,Validity,Medium,2.0,Finance Director,Accounts Payable Lead,20,due_date is not null and invoice_date is not null,Invoice due date is on or after the invoice date
+DQ-FIN-008,Trentmoor Finance,finance_invoices,Uniqueness,Critical,0.0,Finance Director,Accounts Payable Lead,2,1=1,Invoice number appears exactly once
+DQ-FIN-009,Trentmoor Finance,finance_client_accounts,Validity,Low,5.0,Finance Director,Management Accountant,90,credit_limit_gbp is not null,Credit limit is within the approved range

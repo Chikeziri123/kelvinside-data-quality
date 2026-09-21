@@ -1,32 +1,45 @@
 ﻿RULE RESULTS
 ------------------------------------------------------------------------------
-Rule        Severity     Fail     Pop   Rate %  Status
-DQ-CRM-004  Critical       18     618   2.9126  Breached
-DQ-CRM-007  Critical       45     900      5.0  Breached
-DQ-FIN-003  Critical       97    2424   4.0017  Breached
-DQ-FIN-005  Critical       72    2424   2.9703  Breached
-DQ-FIN-008  Critical       24    2424   0.9901  Breached
-DQ-CRM-002  High           13     618   2.1036  Breached
-DQ-CRM-003  High           24     618   3.8835  Breached
-DQ-CRM-006  High           30    1500      2.0  Breached
-DQ-CRM-009  High           18     900      2.0  Breached
-DQ-FIN-001  High           18     618   2.9126  Breached
-DQ-FIN-004  High           48    2424   1.9802  Breached
-DQ-FIN-006  High           36    2424   1.4851  Breached
-DQ-HR-001   High           12     400      3.0  Breached
-DQ-HR-003   High           16     400      4.0  Breached
-DQ-HR-004   High            4     400      1.0  Breached
-DQ-CRM-001  Medium         18     618   2.9126  Breached
-DQ-CRM-008  Medium        290     900  32.2222  Breached
-DQ-FIN-002  Medium          6     180   3.3333  Breached
-DQ-HR-006   High            2     400      0.5  Within tolerance
-DQ-HR-007   High            2     400      0.5  Within tolerance
-DQ-CRM-005  Low            60    1500      4.0  Within tolerance
-DQ-FIN-009  Low             0     618      0.0  Clean
-DQ-CRM-010  Medium          0     900      0.0  Clean
-DQ-FIN-007  Medium         24    2424   0.9901  Within tolerance
-DQ-HR-002   Medium          8     400      2.0  Within tolerance
-DQ-HR-005   Medium          4     400      1.0  Within tolerance
+Rule        Severity    Fail   Scope   Total   Rate %  Status
+DQ-CRM-004  Critical      18     618     618   2.9126  Breached
+DQ-CRM-007  Critical      45     562     900   8.0071  Breached
+DQ-FIN-003  Critical      97    2424    2424   4.0017  Breached
+DQ-FIN-005  Critical      72    2424    2424   2.9703  Breached
+DQ-FIN-008  Critical      24    2424    2424   0.9901  Breached
+DQ-CRM-002  High          13     618     618   2.1036  Breached
+DQ-CRM-003  High          24     605     618   3.9669  Breached
+DQ-CRM-006  High          30    1500    1500      2.0  Breached
+DQ-CRM-009  High          18     900     900      2.0  Breached
+DQ-FIN-001  High          18     618     618   2.9126  Breached
+DQ-FIN-004  High          48    2424    2424   1.9802  Breached
+DQ-FIN-006  High          36    2424    2424   1.4851  Breached
+DQ-HR-001   High          12     354     400   3.3898  Breached
+DQ-HR-003   High          16     400     400      4.0  Breached
+DQ-HR-004   High           4     400     400      1.0  Breached
+DQ-HR-006   High           2      47     400   4.2553  Breached
+DQ-HR-007   High           2      48     400   4.1667  Breached
+DQ-CRM-001  Medium        18     618     618   2.9126  Breached
+DQ-CRM-008  Medium       290     562     900  51.6014  Breached
+DQ-FIN-002  Medium         6     144     180   4.1667  Breached
+DQ-HR-002   Medium         8     388     400   2.0619  Breached
+DQ-CRM-005  Low           60    1500    1500      4.0  Within tolerance
+DQ-FIN-009  Low            0     618     618      0.0  Clean
+DQ-CRM-010  Medium         0     900     900      0.0  Clean
+DQ-FIN-007  Medium        24    2424    2424   0.9901  Within tolerance
+DQ-HR-005   Medium         4     351     400   1.1396  Within tolerance
+
+
+WHERE THE SCOPED DENOMINATOR CHANGED THE RATE
+------------------------------------------------------------------------------
+DQ-CRM-008    51.6014 % on   562 in scope   vs  32.2222 % on   900 total
+DQ-HR-006      4.2553 % on    47 in scope   vs      0.5 % on   400 total
+DQ-HR-007      4.1667 % on    48 in scope   vs      0.5 % on   400 total
+DQ-CRM-007     8.0071 % on   562 in scope   vs      5.0 % on   900 total
+DQ-FIN-002     4.1667 % on   144 in scope   vs   3.3333 % on   180 total
+DQ-HR-001      3.3898 % on   354 in scope   vs      3.0 % on   400 total
+DQ-HR-005      1.1396 % on   351 in scope   vs      1.0 % on   400 total
+DQ-CRM-003     3.9669 % on   605 in scope   vs   3.8835 % on   618 total
+DQ-HR-002      2.0619 % on   388 in scope   vs      2.0 % on   400 total
 
 
 OPEN ISSUES
@@ -47,6 +60,10 @@ ISS-HR-003-20260920       High          16 records  due 2026-09-25  On track
                           assigned to Management Accountant
 ISS-HR-004-20260920       High           4 records  due 2026-09-25  On track
                           assigned to HR Systems Officer
+ISS-HR-006-20260920       High           2 records  due 2026-09-25  On track
+                          assigned to HR Systems Officer
+ISS-HR-007-20260920       High           2 records  due 2026-09-25  On track
+                          assigned to HR Systems Officer
 ISS-CRM-002-20260920      High          13 records  due 2026-09-25  On track
                           assigned to CRM Administrator
 ISS-CRM-003-20260920      High          24 records  due 2026-09-25  On track
@@ -61,6 +78,8 @@ ISS-FIN-004-20260920      High          48 records  due 2026-09-25  On track
                           assigned to Accounts Payable Lead
 ISS-FIN-006-20260920      High          36 records  due 2026-09-25  On track
                           assigned to Accounts Payable Lead
+ISS-HR-002-20260920       Medium         8 records  due 2026-10-10  On track
+                          assigned to HR Systems Officer
 ISS-CRM-001-20260920      Medium        18 records  due 2026-10-10  On track
                           assigned to CRM Administrator
 ISS-CRM-008-20260920      Medium       290 records  due 2026-10-10  On track
@@ -72,6 +91,6 @@ ISS-FIN-002-20260920      Medium         6 records  due 2026-10-10  On track
 SUMMARY
 ------------------------------------------------------------------------------
 Clean rules:            2
-Within tolerance:       6
-Breached:               18
-Mean pass rate:         96.63 percent
+Within tolerance:       3
+Breached:               21
+Mean pass rate:         95.42 percent

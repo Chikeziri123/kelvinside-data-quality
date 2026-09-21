@@ -1,13 +1,23 @@
 {#
     Builds a union over the stored failure tables produced by dbt test.
 
-    Each rule writes its failing rows to main_dq_failures.<rule_name>.
-    Rather than hand-maintaining a union that drifts every time a rule is
-    added, the list is declared once here and the SQL is generated.
+    Two denominators are produced for every rule:
 
-    Row counts are read from the failure tables, and the denominator comes
-    from the staging model the rule runs against, so the failure rate is a
-    proportion of the population the rule actually examined.
+      population_in_scope  - rows the rule actually examines, after its
+                             declared filter is applied
+      population_total     - every row in the subject table
+
+    The in-scope figure is the one the failure rate and the threshold
+    verdict use, because a rule cannot fail a row it never looked at.
+    DQ-CRM-008 examines open opportunities only, so measuring it against
+    all 900 opportunities understated its rate by a third and could let a
+    breached rule report as within tolerance.
+
+    The total is retained so the scorecard can show coverage: what
+    proportion of each table any rule is watching at all.
+
+    The population filter is declared in the rules catalogue seed, not
+    here, so the filter travels with the rule definition it belongs to.
 #}
 
 {% macro rule_result_union() %}
@@ -41,12 +51,27 @@
     ('DQ-FIN-009', 'dq_fin_009_credit_limit_within_approved_range', 'stg_finance_client_accounts')
 ] %}
 
+{# Read the declared population filters out of the seed at compile time. #}
+{% set filter_lookup = {} %}
+{% if execute %}
+    {% set filter_query %}
+        select rule_id, population_filter from {{ ref('dq_rules') }}
+    {% endset %}
+    {% set filter_rows = run_query(filter_query) %}
+    {% for row in filter_rows.rows %}
+        {% do filter_lookup.update({row[0]: row[1]}) %}
+    {% endfor %}
+{% endif %}
+
 {% for rule_id, table_name, population_model in rules %}
+{% set scope_filter = filter_lookup.get(rule_id, '1=1') %}
 select
-    '{{ rule_id }}'       as rule_id,
-    '{{ table_name }}'    as failure_table,
+    '{{ rule_id }}'    as rule_id,
+    '{{ table_name }}' as failure_table,
+    '{{ scope_filter | replace("'", "''") }}' as population_filter_applied,
     (select count(*) from {{ target.schema }}_dq_failures.{{ table_name }}) as failing_records,
-    (select count(*) from {{ ref(population_model) }})                      as population_records
+    (select count(*) from {{ ref(population_model) }} where {{ scope_filter }}) as population_in_scope,
+    (select count(*) from {{ ref(population_model) }}) as population_total
 {% if not loop.last %}union all{% endif %}
 {% endfor %}
 

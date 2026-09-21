@@ -7,11 +7,18 @@ profile: 'kelvinside_dq'
 model-paths: ["models"]
 test-paths: ["tests"]
 macro-paths: ["macros"]
+seed-paths: ["seeds"]
 
 target-path: "target"
 clean-targets:
   - "target"
   - "dbt_packages"
+
+vars:
+  # The notional date the nightly extracts were taken. Timeliness rules
+  # measure against this rather than the system clock, so results stay
+  # reproducible for anyone who clones the repository.
+  extract_date: '2026-09-20'
 
 models:
   kelvinside_dq:
@@ -21,3 +28,12 @@ models:
     marts:
       +materialized: table
       +schema: marts
+
+data_tests:
+  kelvinside_dq:
+    # Warn rather than error: a monitoring run must report every rule,
+    # not stop at the first failure. Breach is judged against the
+    # threshold in the catalogue, downstream in the scorecard.
+    +severity: warn
+    +store_failures: true
+    +schema: dq_failures

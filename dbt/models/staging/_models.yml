@@ -1,0 +1,206 @@
+version: 2
+
+models:
+
+  # ------------------------------------------------------------------
+  # Brackenhill HR
+  # ------------------------------------------------------------------
+  - name: stg_hr_employees
+    description: Employees, roles and cost centre assignment from Brackenhill HR.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          name: dq_hr_002_work_email_format_valid
+          arguments:
+            expression: "regexp_matches(work_email, '^[^@[:space:]]+@[^@[:space:]]+\\.[A-Za-z]{2,}$')"
+          config:
+            where: "work_email is not null"
+      - dbt_utils.expression_is_true:
+          name: dq_hr_005_start_date_not_in_future
+          arguments:
+            expression: "start_date <= date '{{ var('extract_date') }}'"
+          config:
+            where: "employment_status = 'Active' and start_date is not null"
+      - dbt_utils.expression_is_true:
+          name: dq_hr_006_leaver_date_after_start_date
+          arguments:
+            expression: "leaver_date >= start_date"
+          config:
+            where: "leaver_date is not null and start_date is not null"
+      - dbt_utils.expression_is_true:
+          name: dq_hr_007_leaver_not_marked_active
+          arguments:
+            expression: "employment_status <> 'Active'"
+          config:
+            where: "leaver_date is not null"
+    columns:
+      - name: employee_id
+        data_tests:
+          - unique
+          - not_null
+      - name: work_email
+        data_tests:
+          - not_null:
+              name: dq_hr_001_active_employee_has_work_email
+              config:
+                where: "employment_status = 'Active'"
+      - name: cost_centre_code
+        data_tests:
+          - relationships:
+              name: dq_hr_003_employee_cost_centre_exists
+              arguments:
+                to: ref('stg_finance_cost_centres')
+                field: cost_centre_code
+              config:
+                where: "cost_centre_code is not null"
+      - name: start_date
+        data_tests:
+          - not_null:
+              name: dq_hr_004_employee_has_start_date
+
+  # ------------------------------------------------------------------
+  # Halstead CRM
+  # ------------------------------------------------------------------
+  - name: stg_crm_clients
+    description: Client organisations from Halstead CRM, with a normalised name for duplicate detection.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          name: dq_crm_001_postcode_format_valid
+          arguments:
+            expression: "regexp_matches(postcode, '^[A-Z]{1,2}[0-9]{1,2}[A-Z]? ?[0-9][A-Z]{2}$')"
+          config:
+            where: "postcode is not null"
+    columns:
+      - name: client_id
+        data_tests:
+          - unique
+          - not_null
+      - name: account_manager_employee_id
+        data_tests:
+          - not_null:
+              name: dq_crm_002_active_client_has_account_manager
+              config:
+                where: "status = 'Active'"
+
+  - name: stg_crm_contacts
+    description: Client contacts from Halstead CRM.
+    columns:
+      - name: contact_id
+        data_tests:
+          - unique
+          - not_null
+      - name: email
+        data_tests:
+          - not_null:
+              name: dq_crm_005_contact_has_email
+      - name: client_id
+        data_tests:
+          - relationships:
+              name: dq_crm_006_contact_client_exists
+              arguments:
+                to: ref('stg_crm_clients')
+                field: client_id
+              config:
+                where: "client_id is not null"
+
+  - name: stg_crm_opportunities
+    description: Sales pipeline from Halstead CRM.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          name: dq_crm_010_opportunity_value_positive
+          arguments:
+            expression: "value_gbp > 0"
+          config:
+            where: "value_gbp is not null"
+    columns:
+      - name: opportunity_id
+        data_tests:
+          - unique
+          - not_null
+      - name: client_id
+        data_tests:
+          - relationships:
+              name: dq_crm_009_opportunity_client_exists
+              arguments:
+                to: ref('stg_crm_clients')
+                field: client_id
+              config:
+                where: "client_id is not null"
+
+  # ------------------------------------------------------------------
+  # Trentmoor Finance
+  # ------------------------------------------------------------------
+  - name: stg_finance_cost_centres
+    description: Cost centre reference data, owned by Finance and shared with HR.
+    columns:
+      - name: cost_centre_code
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_finance_client_accounts
+    description: Finance side client accounts, cross referenced to CRM clients.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          name: dq_fin_009_credit_limit_within_approved_range
+          arguments:
+            expression: "credit_limit_gbp between 1000 and 1000000"
+          config:
+            where: "credit_limit_gbp is not null"
+    columns:
+      - name: account_id
+        data_tests:
+          - unique
+          - not_null
+      - name: crm_client_ref
+        data_tests:
+          - relationships:
+              name: dq_fin_001_account_crm_client_exists
+              arguments:
+                to: ref('stg_crm_clients')
+                field: client_id
+              config:
+                where: "crm_client_ref is not null"
+
+  - name: stg_finance_suppliers
+    description: Supplier master data from Trentmoor Finance.
+    columns:
+      - name: supplier_id
+        data_tests:
+          - unique
+          - not_null
+      - name: vat_number
+        data_tests:
+          - not_null:
+              name: dq_fin_002_active_supplier_has_vat_number
+              config:
+                where: "status = 'Active'"
+
+  - name: stg_finance_invoices
+    description: Sales invoices from Trentmoor Finance.
+    data_tests:
+      - dbt_utils.expression_is_true:
+          name: dq_fin_006_invoice_amount_positive
+          arguments:
+            expression: "amount_gbp > 0"
+          config:
+            where: "amount_gbp is not null"
+      - dbt_utils.expression_is_true:
+          name: dq_fin_007_due_date_after_invoice_date
+          arguments:
+            expression: "due_date >= invoice_date"
+          config:
+            where: "due_date is not null and invoice_date is not null"
+    columns:
+      - name: invoice_number
+        data_tests:
+          - unique:
+              name: dq_fin_008_invoice_number_unique
+      - name: account_id
+        data_tests:
+          - relationships:
+              name: dq_fin_004_invoice_account_exists
+              arguments:
+                to: ref('stg_finance_client_accounts')
+                field: account_id
+              config:
+                where: "account_id is not null"

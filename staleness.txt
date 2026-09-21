@@ -1,0 +1,17 @@
+﻿OPEN OPPORTUNITIES BY AGE SINCE LAST UPDATE
+----------------------------------------------------------------------
+a. Under 90 days           162 opportunities   GBP   37,717k
+b. 90 to 179 days          107 opportunities   GBP   23,582k
+c. 180 to 364 days         150 opportunities   GBP   34,727k
+d. 365 days or more        143 opportunities   GBP   31,462k
+
+Total open opportunities: 562
+
+
+EFFECT OF DIFFERENT STALENESS THRESHOLDS
+----------------------------------------------------------------------
+  90 days     398 flagged    70.8% of open pipeline
+ 180 days     290 flagged    51.6% of open pipeline
+ 270 days     214 flagged    38.1% of open pipeline
+ 365 days     143 flagged    25.4% of open pipeline
+ 540 days      57 flagged    10.1% of open pipeline
